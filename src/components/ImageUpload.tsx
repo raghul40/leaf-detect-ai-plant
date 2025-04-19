@@ -2,21 +2,65 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
+import { toast } from "sonner";
+import AnalysisResults from "./AnalysisResults";
+
+// Mock function to simulate API call - Replace with actual API call later
+const analyzeImage = async (file: File): Promise<{ disease: string; confidence: number }> => {
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 1500));
+  
+  // Mock response - Replace with actual API integration
+  return {
+    disease: "Early Blight",
+    confidence: 0.89
+  };
+};
 
 const ImageUpload = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisResult, setAnalysisResult] = useState<{
+    disease: string | null;
+    confidence: number | null;
+  }>({ disease: null, confidence: null });
+  const [error, setError] = useState<string | null>(null);
 
-  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setSelectedImage(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      try {
+        setSelectedImage(file);
+        setError(null);
+        setAnalysisResult({ disease: null, confidence: null });
+        
+        // Create image preview
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreview(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+
+        // Start analysis
+        setIsAnalyzing(true);
+        const result = await analyzeImage(file);
+        setAnalysisResult(result);
+        toast.success("Analysis complete!");
+      } catch (err) {
+        setError("Failed to analyze image. Please try again.");
+        toast.error("Failed to analyze image");
+      } finally {
+        setIsAnalyzing(false);
+      }
     }
+  };
+
+  const handleRemove = () => {
+    setSelectedImage(null);
+    setPreview(null);
+    setAnalysisResult({ disease: null, confidence: null });
+    setError(null);
   };
 
   return (
@@ -52,16 +96,20 @@ const ImageUpload = () => {
             />
             <Button
               variant="outline"
-              onClick={() => {
-                setSelectedImage(null);
-                setPreview(null);
-              }}
+              onClick={handleRemove}
             >
               Remove Image
             </Button>
           </div>
         )}
       </div>
+      
+      <AnalysisResults
+        isLoading={isAnalyzing}
+        disease={analysisResult.disease}
+        confidence={analysisResult.confidence}
+        error={error}
+      />
     </div>
   );
 };
