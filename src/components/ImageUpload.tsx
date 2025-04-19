@@ -65,21 +65,27 @@ const ImageUpload = () => {
 
   return (
     <div className="max-w-2xl mx-auto mt-8">
-      <div className="rounded-2xl border-2 border-dashed border-green-300 bg-gradient-to-b from-green-50/50 to-white p-8 text-center transition-all hover:border-green-400 hover:shadow-lg hover:shadow-green-100">
+      <div className="rounded-2xl border-2 border-dashed border-green-300 bg-gradient-to-b from-green-50/70 to-white/80 p-8 text-center transition-all hover:border-green-400 hover:shadow-xl hover:shadow-green-100/50">
         {!preview ? (
           <div className="space-y-6">
             <div className="flex justify-center">
-              <div className="rounded-full bg-green-100/80 p-4">
+              <div className="rounded-full bg-green-100/80 p-4 animate-pulse">
                 <Flower className="h-12 w-12 text-green-600" />
               </div>
             </div>
             <div className="space-y-2">
               <p className="text-lg font-medium text-gray-700">
-                Drag and drop your leaf image here, or click to select
+                Capture Nature's Secrets: Upload a Leaf Image
               </p>
-              <p className="text-sm text-gray-500">PNG, JPG up to 10MB</p>
+              <p className="text-sm text-gray-500">
+                PNG, JPG up to 10MB | AI-Powered Disease Detection
+              </p>
             </div>
-            <Button variant="outline" className="relative border-green-200 hover:border-green-400 hover:bg-green-50">
+            <Button 
+              variant="outline" 
+              className="relative border-green-300 hover:border-green-500 hover:bg-green-50/50 transition-colors group"
+            >
+              <Upload className="mr-2 h-4 w-4 text-green-600 group-hover:rotate-12 transition-transform" />
               Select Image
               <input
                 type="file"
@@ -94,7 +100,7 @@ const ImageUpload = () => {
             <img
               src={preview}
               alt="Selected leaf"
-              className="max-h-[300px] mx-auto rounded-xl shadow-lg transition-transform hover:scale-105 duration-300"
+              className="max-h-[300px] mx-auto rounded-xl shadow-lg transition-transform hover:scale-105 duration-300 border-2 border-green-100"
             />
             <Button
               variant="outline"
