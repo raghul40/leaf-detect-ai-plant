@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Tree, Leaf } from "lucide-react";
+import { TreePine, Leaf } from "lucide-react";
 
 const Hero = () => {
   return (
@@ -14,7 +14,7 @@ const Hero = () => {
       <div className="relative text-center space-y-6 z-10">
         <div className="flex justify-center">
           <div className="rounded-full bg-green-100/80 p-4 animate-pulse">
-            <Tree className="h-12 w-12 text-green-600" />
+            <TreePine className="h-12 w-12 text-green-600" />
           </div>
         </div>
         
